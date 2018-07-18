@@ -1,0 +1,239 @@
+\documentclass[psamsfonts]{amsart}
+
+% -------Packages---------
+\usepackage{microtype}[final]
+\usepackage[style=numeric]{biblatex}
+\usepackage{hyperref}
+\addbibresource{./bib.bib}
+\usepackage{amssymb,amsfonts}
+\usepackage[all,arc]{xy}
+\usepackage{enumerate}
+\usepackage{mathrsfs}
+
+%--------Theorem Environments--------
+%theoremstyle{plain} --- default
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+\newtheorem{prob}[thm]{Problem}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+\newtheorem{con}[thm]{Construction}
+\newtheorem{exmp}[thm]{Example}
+\newtheorem{exmps}[thm]{Examples}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{notns}[thm]{Notations}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rem}[thm]{Remark}
+\newtheorem{rems}[thm]{Remarks}
+\newtheorem{warn}[thm]{Warning}
+\newtheorem{sch}[thm]{Scholium}
+
+
+\makeatletter
+\let\c@equation\c@thm
+\makeatother
+\numberwithin{equation}{section}
+
+\title{Undecidability and the structure of the Turing degrees}
+
+\author{Philip Adams}
+
+\date{\today}
+
+\begin{document}
+
+\begin{abstract}
+
+  This paper explores the structure and properties of the Turing degrees, or
+  degrees of undecidability. We introduce the Turing machine, an abstract model
+  of computation, in order to develop the concepts of undecidability and Turing
+  reduction. We demonstrate the technique of proof by reduction through a series
+  of examples of undecidable problems related to context-free grammars. We then
+  employ reducibility to consider a partial ordering on the set of Turing degrees, $\mathcal{D}$. Finally, we prove a variety of theorems
+  related to the structure of $\mathcal{D}$. 
+
+\end{abstract}
+
+\maketitle
+
+\tableofcontents
+
+\section{Introduction}
+Historical overview of the field, motivation for study
+\cite{ambos-spies06:_degrees_unsol}
+\cite{soare16_turin_comput}
+\cite{soare1999history}
+\cite{lerman16:_degrees_unsol}
+
+
+\section{Turing Machines}
+% Turing 1936?
+\cite{turing37_comput_number_with_applic_to_entsc}
+\section{Undecidability}
+
+
+\begin{prob}[The Halting Problem]
+  \cite{turing37_comput_number_with_applic_to_entsc}
+  \cite{sipser13:_introd_theor_comput}
+\end{prob}
+\begin{thm}[Rice's Theorem] \cite{kozen99_autom}
+  % Proof by reduction to the halting problem?
+\end{thm}
+\subsection{Incompleteness}
+\begin{thm}[G\"odel's Incompleteness Theorem] 
+  % Kleene 1943? Also shown in hopcroft 1979
+  \cite{kleene43_recur_predic_quant}
+\end{thm}
+\section{Reducibility}
+\cite{sipser13:_introd_theor_comput}
+\cite{post44:_recur}
+
+\cite{kleene80_introd}
+
+\section{Context Free Grammars}
+
+\begin{defn}
+ A Context Free Grammar is...
+\end{defn}
+
+\begin{defn}
+  A Pushdown Automata is...
+\end{defn}
+
+\begin{thm}[Equivalence of CFGs and Pushdown Automata]
+  \cite{hopcroft07:_introd_autom_theor_languag_comput}
+\end{thm}
+\begin{thm}[Closure Properties]
+  \cite{sipser13:_introd_theor_comput}
+  Union, Concat, Star, intersection with regular, substitution
+\end{thm}
+\begin{prob}
+Empty, finite
+\end{prob}
+\subsection{Undecidable Problems}
+\begin{prob}[The Post Correspondence Problem]
+\cite{hopcroft07:_introd_autom_theor_languag_comput}
+\end{prob}
+\begin{prob}
+ Undecidability of ambiguity 
+\end{prob}
+\cite{greibach66:_unsol_recog_linear_contex_free_languag}
+\cite{Hopcroft1969}
+\begin{prob}
+  Universality
+\end{prob}
+\begin{prob}
+  Equality, inclusion
+\end{prob}
+\begin{prob}
+  Disjointness
+\end{prob}
+\subsubsection{Problems decidable for Deterministic CFGs}
+\cite{ginsburg65:_deter}
+\begin{defn}
+  A Deterministic Context Free Grammar is...
+  \cite{sipser13:_introd_theor_comput}
+\end{defn}
+
+\begin{thm}[Closure Properties]
+  \cite{sipser13:_introd_theor_comput}
+  Complement
+\end{thm}
+
+\begin{prob}[The Equivalence Problem for Deterministic CFGs]
+\cite{senizergues_det_pd_decid}
+\end{prob}
+
+\begin{prob}
+  Universality
+\end{prob}
+
+
+\section{Turing Degrees}
+\begin{defn}
+  A Turing degree...
+\cite{post44:_recur}
+\cite{kleene54_upper_semi_lattic_degrees_recur_unsol}
+\end{defn}
+
+\begin{defn}
+  The jump operator...
+  
+\end{defn}
+
+\begin{defn}
+  Computably Enumerable
+\end{defn}
+
+\begin{defn}
+  Completeness
+\end{defn}
+
+\subsection{Properties and Structure}
+\begin{prob}[Post's Problem]
+  \cite{post44:_recur}
+  % Marchenkov 1976
+  % Independently by Friedberg 57, Mucnik 56/58 using priority method
+  % Priority free solution Kucer 1986''
+  % ``Natural'' solns don't exist
+  \cite{Friedberg236}
+\end{prob}
+
+% Myhill 56 c.e.lattice
+
+\begin{lem}
+  D does not form a lattice
+  \cite{kleene54_upper_semi_lattic_degrees_recur_unsol}
+\end{lem}
+\begin{thm}
+  D forms an upper semi-lattice
+  % Kleene-Post 54 Degrees upper semi-lattice, jump an operator on degrees
+  \cite{kleene54_upper_semi_lattic_degrees_recur_unsol}
+\end{thm}
+
+\begin{thm}
+  Existence of minimal degrees
+  % Spector 56,Shoenfield 66 (Better)
+  \cite{spector56_degrees_recur_unsol}
+  \cite{shoenfield66_theor_minim_degrees}
+\end{thm}
+
+\begin{thm}
+  The c.e. degrees are dense
+  \cite{sacks64:_recur_enumer_degrees_dense}
+\end{thm}
+
+Homogeneity problems
+% Feiner 1970, Shore 1979
+
+Theory of D Undecidable
+
+\subsection{Turing Degrees of Problems related to CFGs}
+\cite{REEDY197577}
+
+
+
+
+\section*{Acknowledgments}
+It is a pleasure to thank my mentor, Ronno Das, for supervising this project and
+providing valuable feedback and advice. I would also like to thank Peter May for
+organizing this REU, and Daniil Rudenko for running the Apprentice Program.
+
+\printbibliography
+
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
