@@ -1,0 +1,45 @@
+Paper for the UChicago 2018 Math REU http://math.uchicago.edu/~may/REU2018/
+
+This paper is a **Work in Progress!**
+
+* Roadmap
+** DONE Outline
+   CLOSED: [2018-07-19 Thu 18:46]
+** TODO Readings & Notes
+    - [X] Spies/Fejer 2006
+	- [-] Friedberg 1957
+	- [-] Ginsburg/Greibach 1965
+	- [-] Greibach 1966
+	- [X] Hopcroft 1969
+	- [X] HMU 2007
+	- [-] Kleene 1943
+	- [-] Kleene/Post 1954
+	- [-] Kleene 1952
+	- [X] Kozen 1999
+	- [X] Lerman 2016
+	- [X] Post 1944
+	- [-] Reedy/Satvich 1975
+	- [-] Sacks 1964
+	- [X] Senizergues 1997
+	- [-] Shoenfield 1966
+	- [X] Sipser 2013
+	- [-] Soare 1999
+	- [-] Soare 2016
+	- [-] Spector 1956
+	- [-] Turing 1937
+** TODO Draft Sections
+   - [-] Section 1
+   - [-] Section 2
+   - [-] Section 3
+   - [-] Section 4
+   - [-] Section 5
+   - [-] Section 6
+				 
+** TODO Revise Sections
+   - [-] Section 1
+   - [-] Section 2
+   - [-] Section 3
+   - [-] Section 4
+   - [-] Section 5
+   - [-] Section 6
+** TODO Proofreading
