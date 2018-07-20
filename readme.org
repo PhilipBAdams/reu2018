@@ -1,3 +1,7 @@
+# Local variables:
+# eval: (add-hook 'after-save-hook 'org-md-export-to-markdown t t)
+# end:
+
 Paper for the UChicago 2018 Math REU http://math.uchicago.edu/~may/REU2018/
 
 This paper is a **Work in Progress!**
