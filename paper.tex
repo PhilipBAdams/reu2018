@@ -60,8 +60,8 @@
   reduction. We demonstrate the technique of proof by reduction through a series
   of examples of undecidable problems related to context-free grammars. We then
   employ reducibility to consider a partial ordering on the set of Turing degrees, $\mathcal{D}$. Finally, we prove a variety of theorems
-  related to the structure of $\mathcal{D}$. 
-
+  related to the structure of $\mathcal{D}$.
+  
 \end{abstract}
 
 \maketitle
@@ -137,9 +137,33 @@ that is known to be decidable.
   \cite{sipser13:_introd_theor_comput}
   Union, Concat, Star, intersection with regular, substitution
 \end{thm}
-\begin{prob}
-Empty, finite, containment within regular
+\begin{prob}[Emptiness]
+  \label{prob:cfg:emptiness}
+Take some context-free grammar $G$. Is $L(G)=\varnothing$?
 \end{prob}
+
+\begin{prob}[Finite]
+Take some context-free grammar $G$. Is $L(G)$ finite?
+\end{prob}
+
+\begin{prob}[Regular Containment]
+Take some context-free grammar $G$ and some regular language $R$. Is
+$L(G)\subseteq R$?
+\begin{proof}[Proof of Decidability]
+  We have that $L(G)\subseteq R$ if and only if
+  $\overline{L(G)}\cup R = \Sigma^*$. So, it follows that $L(G)$ is contained by
+  $R$ if and only iff $\overline{\overline{L(G)}\cup R} = \varnothing$. By
+  DeMorgan's laws, we have that this is equivalent to the statement
+  $L(G)\cap \overline{R} = \varnothing$. Regular languages are closed under
+  complement and context-free languages are closed under intersection with a
+  regular language, so it follows that $L(G)\cap \overline{R}$ is a context free
+  language. So the problem of containment by a regular language is reducible to
+  Problem~\ref{prob:cfg:emptiness}, the problem of emptiness, which is
+  decidable. So, the problem of containment by a regular language is decidable.
+\end{proof}
+
+\end{prob}
+
 \subsection{Undecidable Problems}
 \begin{prob}[The Post Correspondence Problem]
   Consider some alphabet $\Sigma$ and two finite lists of words over $\Sigma$
@@ -212,7 +236,7 @@ An ambiguous grammar is...
 \end{defn}
 
 \begin{prob}[Ambiguity]
-  Take some context free grammar $G$. Is $G$ ambiguous?
+  Take some context-free grammar $G$. Is $G$ ambiguous?
   \begin{proof}[Proof of Undecidability]
     Consider the Post correspondence problem for two lists of words
     $A,B$. Construct their corresponding grammars $G_A,G_B$. Now, consider the
@@ -228,7 +252,15 @@ An ambiguous grammar is...
 \cite{greibach66:_unsol_recog_linear_contex_free_languag}
 \cite{Hopcroft1969}
 \begin{prob}
-  Regularity
+  Take some context-free grammar $G$. Is $L(G)$ regular?
+  \begin{proof}[Proof of Undecidability]
+    Note that $\Sigma^*$ is regular, so if $L(G)$ is not regular then it follows
+    that $L(G)\neq \Sigma^*$. Additionally, universality is decidable within
+    regular languages, because they are closed under complement and emptiness is
+    decidable even within context-free grammars. So, we have that
+    Problem~\ref{prob:cfg:universality} reduces to the regularity problem. It
+    follows that the regularity problem is undecidable.
+  \end{proof}
 \end{prob}
 \begin{prob}[Equality]
   Take context free grammars $G_1,G_2$. Is $L(G_1)=L(G_2)$?
