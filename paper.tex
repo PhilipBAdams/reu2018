@@ -9,6 +9,7 @@
 \usepackage[all,arc]{xy}
 \usepackage{enumerate}
 \usepackage{mathrsfs}
+\usepackage{todonotes}
 
 %--------Theorem Environments--------
 %theoremstyle{plain} --- default
@@ -65,6 +66,7 @@
 
 \maketitle
 
+
 \tableofcontents
 
 \section{Introduction}
@@ -73,6 +75,7 @@ Historical overview of the field, motivation for study
 \cite{soare16_turin_comput}
 \cite{soare1999history}
 \cite{lerman16:_degrees_unsol}
+\subsection{Decision Problems}
 
 
 \section{Turing Machines}
@@ -82,6 +85,7 @@ Historical overview of the field, motivation for study
 
 
 \begin{prob}[The Halting Problem]
+  \label{prob:halting}
   \cite{turing37_comput_number_with_applic_to_entsc}
   \cite{sipser13:_introd_theor_comput}
 \end{prob}
@@ -93,7 +97,24 @@ Historical overview of the field, motivation for study
   % Kleene 1943? Also shown in hopcroft 1979
   \cite{kleene43_recur_predic_quant}
 \end{thm}
-\section{Reducibility}
+\subsection{Reducibility}
+While it is possible to prove that a problem is undecidable directly, as in
+problem~\ref{prob:halting}, it is often more convenient to prove undecidability
+through comparison to problems which are already known to be undecidable. This
+comparison takes place through the technique of Turing reduction.
+\begin{defn}
+  Given two decision problems $A$ and $B$, we say that $A$ is Turing reducible
+  to $B$ if, given a machine $D_B$ that decides $B$, it is possible to construct
+  a machine $D_A$ that decides $A$.
+\end{defn}
+So, we have that if $A$ is reducible to $B$, then $A$ can be no harder than $B$,
+because any solution to $B$ also leads to a solution of $B$. So, if we have some
+problem $B$ that we would like to prove is undecidable, we can do so by showing
+that some problem $A$ which is already known to be undecidable is reducible to
+$B$. Since $A$ cannot be harder than $B$, it follows that $B$ must also be
+undecidable. Alternatively, if we would like to show that some problem $A$ is
+decidable, it is sufficient to show that it is reducible to some problem $B$
+that is known to be decidable.
 \cite{sipser13:_introd_theor_comput}
 \cite{post44:_recur}
 
@@ -117,26 +138,117 @@ Historical overview of the field, motivation for study
   Union, Concat, Star, intersection with regular, substitution
 \end{thm}
 \begin{prob}
-Empty, finite
+Empty, finite, containment within regular
 \end{prob}
 \subsection{Undecidable Problems}
 \begin{prob}[The Post Correspondence Problem]
-\cite{hopcroft07:_introd_autom_theor_languag_comput}
+  Consider some alphabet $\Sigma$ and two finite lists of words over $\Sigma$
+  denoted $A = a_1,\dots,a_n$ and $B = b_1, \dots, b_n$. Then, does there exist
+some sequence of indices $(i_k),$ for $1 \leq k \leq K$ and for
+  $K\geq 1$, and with $1 \leq i_k \leq n$ for all $k$ such that
+  \[
+    a_{i_1}\dots a_{i_K} = b_{i_1}\dots b_{i_K}?
+  \]
+  \begin{proof}[Solution]
+    This problem is shown to be undecidable through a reduction to the halting
+    problem. The proof involves \todo{Describe proof in detail}
+    \cite{sipser13:_introd_theor_comput}
+  \end{proof}
 \end{prob}
-\begin{prob}
- Undecidability of ambiguity 
+
+The Post correspondence problem is a useful tool, because it allows us to
+demonstrate the undecidability of problems without doing the complex reasoning
+about Turing machines that the halting problem requires. We will now show the
+undecidability of a variety of problems about context-free grammars through
+reduction to the Post correspondence problem.
+
+\begin{prob}[Disjointness]
+  Given two context-free grammars $P,Q$, is $L(P)\cap L(Q) = \varnothing$?
+  \begin{proof}[Proof of Undecidability]
+    Consider the Post correspondence problem for two lists of words $A,B$. We
+    construct two context free grammars from these lists as follows:
+    \begin{equation*}
+      \begin{split}
+        G_A \rightarrow  &\;a_11 \\
+        &\!\!\!\!\vdots \\
+        G_A \rightarrow  &\;a_nn \\
+        G_A \rightarrow  &\;a_1G_A1 \\
+        &\!\!\!\!\vdots \\
+        G_A \rightarrow  &\;a_nG_An \\
+      \end{split}
+      \qquad
+      \begin{split}
+        G_B \rightarrow  &\;a_11 \\
+        &\!\!\!\!\vdots \\
+        G_B \rightarrow  &\;a_nn \\
+        G_B \rightarrow  &\;a_1G_B1 \\
+        &\!\!\!\!\vdots \\
+        G_B \rightarrow  &\;a_nG_Bn \\
+      \end{split}
+    \end{equation*}
+    Then, we can observe that for some string $s$ to exist in both $L(G_A)$ and $L(G_B)$,
+    it must be a solution to the Post correspondence for $A,B$. So, if $L(G_A)\cap
+    L(G_B)=\varnothing$, then there are no solutions to the Post correspondence
+    for $A,B$. So, it follows that the Post correspondence problem is reducible
+    to the problem of the disjointness of context-free grammars, so since the
+    Post correspondence problem is undecidable, it follows that the disjointness
+    problem is undecidable.
+  \end{proof}
+\end{prob}
+
+\begin{prob}[Universality]
+  \label{prob:cfg:universality}
+  Take some context-free grammar $G$ over an alphabet $\Sigma$. Then, is
+  \[
+    L(G) = \Sigma^*?
+  \]
+  \begin{proof}[Proof of Undecidability]
+    
+  \end{proof}
+\end{prob}
+
+\begin{defn}
+An ambiguous grammar is...
+\end{defn}
+
+\begin{prob}[Ambiguity]
+  Take some context free grammar $G$. Is $G$ ambiguous?
+  \begin{proof}[Proof of Undecidability]
+    Consider the Post correspondence problem for two lists of words
+    $A,B$. Construct their corresponding grammars $G_A,G_B$. Now, consider the
+    grammar
+    \[
+      G \rightarrow G_A \vert G_B.
+    \]
+    It follows that the ambiguity of $G$ implies that a solution to the Post
+    correspondence problem for $A,B$ exists, so the Post correspondence problem
+    reduces to the ambiguity problem, so the ambiguity problem is undecidable.
+  \end{proof}
 \end{prob}
 \cite{greibach66:_unsol_recog_linear_contex_free_languag}
 \cite{Hopcroft1969}
 \begin{prob}
-  Universality
+  Regularity
 \end{prob}
-\begin{prob}
-  Equality, inclusion
+\begin{prob}[Equality]
+  Take context free grammars $G_1,G_2$. Is $L(G_1)=L(G_2)$?
+  \begin{proof}[Proof of Undecidability]
+    Note that $\Sigma^*$ is regular, so it is also a context-free. So,
+    we have that Problem~\ref{prob:cfg:universality} reduces to the equality
+    problem. It follows that the equality problem is undecidable.
+  \end{proof}
 \end{prob}
-\begin{prob}
-  Disjointness
+\begin{prob}[Inclusion]
+  Take context free grammars $G_1,G_2$. Is $L(G_1)\subseteq L(G_2)$?
+  \begin{proof}[Proof of Undecidability]
+    As before, note that $\Sigma^*$ is regular, so it is also a
+    context-free. Additionally, observe that for any grammar $G$, $L(G)\subseteq
+    \Sigma^*$. So,
+    we have that Problem~\ref{prob:cfg:universality} reduces to the inclusion
+    problem, since $\Sigma^* \subseteq L(G) \implies \Sigma^* = L(G)$. It follows that the inclusion problem is undecidable.
+  \end{proof}
 \end{prob}
+
 \subsubsection{Problems decidable for Deterministic CFGs}
 \cite{ginsburg65:_deter}
 \begin{defn}
