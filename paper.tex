@@ -10,6 +10,9 @@
 \usepackage{enumerate}
 \usepackage{mathrsfs}
 \usepackage{todonotes}
+\usepackage{tikz}
+\usetikzlibrary{automata,positioning}
+\usepackage[nolist]{acronym}
 
 %--------Theorem Environments--------
 %theoremstyle{plain} --- default
@@ -68,6 +71,17 @@
 
 
 \tableofcontents
+\begin{acronym}
+  \acro{PDA}[PDA]{Pushdown Automaton}
+  \acroplural{PDA}[PDAs]{Pushdown Automata}
+  \acro{DPDA}[DPDA]{Deterministic Pushdown Automaton}
+  \acroplural{DPDA}[DPDAs]{Deterministic Pushdown Automata}
+  \acro{TM}[TM]{Turing Machine}
+  \acro{FSA}[FSA]{Finite State Automaton}
+  \acroplural{FSA}[FSAs]{Finite State Automata}
+  \acro{CFG}[CFG]{Context-Free Grammar}
+  \acro{CFL}[CFL]{Context-Free Language}
+\end{acronym}
 
 \section{Introduction}
 Historical overview of the field, motivation for study
@@ -79,8 +93,79 @@ Historical overview of the field, motivation for study
 
 
 \section{Turing Machines}
-% Turing 1936?
-\cite{turing37_comput_number_with_applic_to_entsc}
+Upon consideration of different types of problems, it quickly becomes clear that
+some are much more difficult than others. For example, when considering words
+over the alphabet $\{a,b,c\}$, it seems much easier to determine whether a word
+ends in an $a$ than whether a word is a palindrome. It seems even harder still
+to determine whether the word is of the form $a^nb^nc^n$. In order to formalize
+these notions of difficulty, we need to build abstract models of computation,
+and then test their ability to decide such questions. We observe that a machine
+that can solve the first problem only needs to ``remember'' the same amount of
+information no matter how long the input is: the last letter of the word. In
+contrast, the amount of memory that the second and third problems require is
+dependent on the size of the input, because the first half of the palindrome or
+$n$, respectively, can be arbitrarily large. The difference between the second
+and third problems is more subtle: the second problem can be solved moving only
+one direction in memory, while the third problem requires the ability to ``look
+back'' in memory.
+\par
+Based on these differences, we can begin to construct different models of
+computation that have just enough power to solve each problem. The first problem
+can be solved by a \emph{\ac{FSA}}, a collection of a finite
+number of states, a transition function, and a set of accepting states. The
+\ac{FSA} accepts the input if the sequential application of each element to the
+input finishes in an accepting state, and rejects otherwise. \aclp{FSA} are often represented by charts as in Figure~\ref{fig:fsa}, a
+representation of an \ac{FSA} that decides the first problem.
+\begin{figure}[h]
+  \caption{An \ac{FSA} that determines whether a string ends in
+    `$a$'.}
+  \label{fig:fsa}
+  \begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto]
+  \node[state,initial] (q_0) {$q_0$};
+  \node[state,accepting] (q_1) [right=of q_0]{$q_1$};
+  \path[->]
+  (q_0) edge [loop above] node {b,c} ()
+  edge [bend left] node  {a} (q_1)
+  (q_1) edge [bend left] node {b,c} (q_0)
+  edge [loop above] node {a} ();
+\end{tikzpicture}
+\end{figure}
+\par
+The second problem can be solved by a machine called a \emph{\ac{PDA}}, which is essentially a finite state automaton with the addition of
+a stack. Rather than transforming the current state and the input into a new
+state, as with a finite state automata, the transition function of a \ac{PDA} also considers the stack, which it can pop and push from. Within the
+collection of \acp{PDA}, there is another division between
+\emph{\acp{DPDA}} and \emph{Nondeterministic \aclp{PDA}}. For \acp{DPDA}, the
+transition function only outputs one move, rather than a set of
+moves. Nondeterministic \acp{PDA} are able to recognize more languages than
+\acp{DPDA}. Figure~\ref{fig:pda} is a graphical representation of a \ac{PDA}
+that decides palindromes. In this representation, $\epsilon$ is an empty input,
+and  is a special symbol that denotes the bottom of the stack. The moves are
+represented by a double of input and stack operation.
+
+\begin{figure}[h]
+  \label{fig:pda}
+  \caption{A \acl{PDA} that decides palindromes over the alphabet ${a,b}$}
+  \begin{tikzpicture}[shorten >=1pt,node distance=3cm,on grid,auto]
+  \node[state,initial] (q_0) {$q_0$};
+  \node[state] (q_1) [right=of q_0]{$q_1$};
+  \node[state] (q_2) [right=of q_1]{$q_2$};
+  \node[state,accepting] (q_3) [right=of q_2]{$q_3$};
+  \path[->]
+  (q_0) edge node {$\epsilon,\epsilon\to\$$} (q_1)
+  (q_1) edge [loop above] node[text width=1.5cm,align=center] {$0,\epsilon\to 0$
+    $1,\epsilon\to 1$} ()
+  edge node {$\epsilon,\epsilon\to\epsilon$} (q_2)
+  (q_2) edge [loop above] node[text width=1.5cm,align=center] {$0,0\to\epsilon$
+    $1,1\to\epsilon$} ()
+  edge node {$\epsilon,\$\to\epsilon$} (q_3);  
+  \end{tikzpicture}
+\end{figure}
+\par
+Finally, we arrive at the \ac{TM}, devised by Alan Turing in his paper \emph{On
+  Computable Numbers, With an Application To the Entscheidungsproblem}
+~\cite{turing37_comput_number_with_applic_to_entsc}. \aclp{TM} offer an
+unrestricted model of computation,\todo{Discussion of TMs}
 \section{Undecidability}
 
 
@@ -139,11 +224,11 @@ that is known to be decidable.
 \end{thm}
 \begin{prob}[Emptiness]
   \label{prob:cfg:emptiness}
-Take some context-free grammar $G$. Is $L(G)=\varnothing$?
+Let $G$ be a context-free grammar. Is $L(G)=\varnothing$?
 \end{prob}
 
 \begin{prob}[Finite]
-Take some context-free grammar $G$. Is $L(G)$ finite?
+Let $G$ be a context-free grammar. Is $L(G)$ finite?
 \end{prob}
 
 \begin{prob}[Regular Containment]
@@ -175,8 +260,11 @@ some sequence of indices $(i_k),$ for $1 \leq k \leq K$ and for
   \]
   \begin{proof}[Solution]
     This problem is shown to be undecidable through a reduction to the halting
-    problem. The proof involves \todo{Describe proof in detail}
-    \cite{sipser13:_introd_theor_comput}
+    problem. The proof is technical, and involves encoding the computation
+    history of a Turing machine on an input in such a way that the encoding satisfies the
+    PCP if and only if the Turing machine accepts the input. It is described in
+    detail by Sipser in his book \emph{Introduction to the Theory of Computation}
+    \cite{sipser13:_introd_theor_comput}.
   \end{proof}
 \end{prob}
 
@@ -187,7 +275,7 @@ undecidability of a variety of problems about context-free grammars through
 reduction to the Post correspondence problem.
 
 \begin{prob}[Disjointness]
-  Given two context-free grammars $P,Q$, is $L(P)\cap L(Q) = \varnothing$?
+  Let $P,Q$ be context-free grammars. Is $L(P)\cap L(Q) = \varnothing$?
   \begin{proof}[Proof of Undecidability]
     Consider the Post correspondence problem for two lists of words $A,B$. We
     construct two context free grammars from these lists as follows:
@@ -222,7 +310,7 @@ reduction to the Post correspondence problem.
 
 \begin{prob}[Universality]
   \label{prob:cfg:universality}
-  Take some context-free grammar $G$ over an alphabet $\Sigma$. Then, is
+  Let $G$ be some context-free grammar over an alphabet $\Sigma$. Then, is
   \[
     L(G) = \Sigma^*?
   \]
@@ -236,7 +324,7 @@ An ambiguous grammar is...
 \end{defn}
 
 \begin{prob}[Ambiguity]
-  Take some context-free grammar $G$. Is $G$ ambiguous?
+  Let $G$ be a context-free grammar. Is $G$ ambiguous?
   \begin{proof}[Proof of Undecidability]
     Consider the Post correspondence problem for two lists of words
     $A,B$. Construct their corresponding grammars $G_A,G_B$. Now, consider the
@@ -252,7 +340,7 @@ An ambiguous grammar is...
 \cite{greibach66:_unsol_recog_linear_contex_free_languag}
 \cite{Hopcroft1969}
 \begin{prob}
-  Take some context-free grammar $G$. Is $L(G)$ regular?
+  Let $G$ be a context free grammars. Is $L(G)$ regular?
   \begin{proof}[Proof of Undecidability]
     Note that $\Sigma^*$ is regular, so if $L(G)$ is not regular then it follows
     that $L(G)\neq \Sigma^*$. Additionally, universality is decidable within
@@ -263,7 +351,7 @@ An ambiguous grammar is...
   \end{proof}
 \end{prob}
 \begin{prob}[Equality]
-  Take context free grammars $G_1,G_2$. Is $L(G_1)=L(G_2)$?
+  Let $G_1,G_2$ be context free grammars. Is $L(G_1)=L(G_2)$?
   \begin{proof}[Proof of Undecidability]
     Note that $\Sigma^*$ is regular, so it is also a context-free. So,
     we have that Problem~\ref{prob:cfg:universality} reduces to the equality
@@ -271,7 +359,7 @@ An ambiguous grammar is...
   \end{proof}
 \end{prob}
 \begin{prob}[Inclusion]
-  Take context free grammars $G_1,G_2$. Is $L(G_1)\subseteq L(G_2)$?
+  Let $G_1,G_2$ be context free grammars. Is $L(G_1)\subseteq L(G_2)$?
   \begin{proof}[Proof of Undecidability]
     As before, note that $\Sigma^*$ is regular, so it is also a
     context-free. Additionally, observe that for any grammar $G$, $L(G)\subseteq
@@ -281,26 +369,30 @@ An ambiguous grammar is...
   \end{proof}
 \end{prob}
 
-\subsubsection{Problems decidable for Deterministic CFGs}
+\subsubsection{Problems decidable for Deterministic CFLs}
 \cite{ginsburg65:_deter}
 \begin{defn}
-  A Deterministic Context Free Grammar is...
-  \cite{sipser13:_introd_theor_comput}
+  A deterministic context-free language is a language accepted by a
+  deterministic pushdown automata.
 \end{defn}
 
 \begin{thm}[Closure Properties]
-  \cite{sipser13:_introd_theor_comput}
-  Complement
+  If $L$ is a deterministic context-free language, then $\overline{L}$ is a
+  deterministic context-free language.
 \end{thm}
 
-\begin{prob}[The Equivalence Problem for Deterministic CFGs]
-\cite{senizergues_det_pd_decid}
-\end{prob}
-
 \begin{prob}
-  Universality
+  Let $L$ be a deterministic context-free language. Is $L = \Sigma^*$?
 \end{prob}
 
+The decidability of the following problem was an open problem in the field of
+computability theory from 1965, when it was introduced by Ginsburg and Greibach \cite{ginsburg65:_deter}. In 1997, when it was solved by G\'eraud S\'enizergues
+\cite{senizergues_det_pd_decid}. A sketch of the proof follows. 
+
+\begin{prob}[The Equivalence Problem for Deterministic CFGs]
+  Let $L_1,L_2$ be deterministic context-free languages. Is $L_1=L_2$?
+
+\end{prob}
 
 \section{Turing Degrees}
 \begin{defn}
