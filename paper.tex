@@ -34,6 +34,7 @@
 \newtheorem{notns}[thm]{Notations}
 \newtheorem{addm}[thm]{Addendum}
 \newtheorem{exer}[thm]{Exercise}
+\newtheorem{fact}[thm]{Fact}
 
 \theoremstyle{remark}
 \newtheorem{rem}[thm]{Remark}
@@ -183,13 +184,14 @@ unrestricted model of computation,\todo{Discussion of TMs}
   \cite{kleene43_recur_predic_quant}
 \end{thm}
 \subsection{Reducibility}
+\label{subsec:reducibility}
 While it is possible to prove that a problem is undecidable directly, as in
 problem~\ref{prob:halting}, it is often more convenient to prove undecidability
 through comparison to problems which are already known to be undecidable. This
 comparison takes place through the technique of Turing reduction.
 \begin{defn}
-  Given two decision problems $A$ and $B$, we say that $A$ is Turing reducible
-  to $B$ if, given a machine $D_B$ that decides $B$, it is possible to construct
+  Let $A$ and $B$ be decision problems. We say that $A$ is \emph{Turing reducible}
+  to $B$ and write $A \leq_T B$ if, given a machine $D_B$ that decides $B$, it is possible to construct
   a machine $D_A$ that decides $A$.
 \end{defn}
 So, we have that if $A$ is reducible to $B$, then $A$ can be no harder than $B$,
@@ -314,7 +316,7 @@ reduction to the Post correspondence problem.
   \[
     L(G) = \Sigma^*?
   \]
-  \begin{proof}[Proof of Undecidability]
+  \begin{proof}[Proof of Undecidability]\todo{}
     
   \end{proof}
 \end{prob}
@@ -395,16 +397,27 @@ computability theory from 1965, when it was introduced by Ginsburg and Greibach 
 \end{prob}
 
 \section{Turing Degrees}
-\begin{defn}
-  A Turing degree...
-\cite{post44:_recur}
-\cite{kleene54_upper_semi_lattic_degrees_recur_unsol}
-\end{defn}
+In Subsection~\ref{subsec:reducibility}, we introduced the concept of
+Turing reducibility, denoted by the symbol $\leq_T$. This symbol suggests some type of
+ordering over the set of decision problems. In this section, we introduce that
+partial ordering on the set of decision problems and examine its properties.
 
 \begin{defn}
-  The jump operator...
-  
+  Let $A$ and $B$ be decision problems. We say that $A$ and $B$ are
+  \emph{mutually reducibile} and write $=_T$ if $A \leq_T B$ and $B \leq_T A$.
 \end{defn}
+
+\begin{fact}
+  The relation $=_T$ is an equivalence relation.
+\end{fact}
+
+We call the equivalence classes produced by this relation \emph{Turing degrees}
+or \emph{degrees of unsolvability}, a concept first introduced in
+1944 by Emil Post~\cite{post44:_recur}. We write the set of all such degrees as $\mathcal{D}$.
+
+\begin{lem}
+  The relation $\leq_T$ is a partial ordering of $\mathcal{D}$.
+\end{lem}
 
 \begin{defn}
   Computably Enumerable
@@ -415,6 +428,23 @@ computability theory from 1965, when it was introduced by Ginsburg and Greibach 
 \end{defn}
 
 \subsection{Properties and Structure}
+\begin{lem}
+  The set $\mathcal{D}$ is of cardinality $2^{\aleph_0}$.
+\end{lem}
+
+\begin{lem}
+  Every Turing degree contains countably infinite elements.
+\end{lem}
+
+While it is simple to explicitly state problems lying in the lower degrees,
+in order to more easily study the general structure of $\mathcal{D}$, we
+introduce a new operator, \emph{jump}, that increments Turing degrees. Much of
+the behavior of this operator was shown in a join paper by Kleene and Post~\cite{kleene54_upper_semi_lattic_degrees_recur_unsol}.
+
+\begin{defn}
+  The jump operator
+\end{defn}
+
 \begin{prob}[Post's Problem]
   \cite{post44:_recur}
   % Marchenkov 1976
@@ -452,6 +482,9 @@ Homogeneity problems
 % Feiner 1970, Shore 1979
 
 Theory of D Undecidable
+
+
+Theory of D equivalent to to second-order arithmetic \cite{simpson77:_first_order_theor_degrees_recur_unsol}
 
 \subsection{Turing Degrees of Problems related to CFGs}
 \cite{REEDY197577}
