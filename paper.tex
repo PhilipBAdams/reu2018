@@ -93,7 +93,7 @@ Historical overview of the field, motivation for study
 \subsection{Decision Problems}
 
 
-\section{Turing Machines}
+\section{Models of Computation}
 Upon consideration of different types of problems, it quickly becomes clear that
 some are much more difficult than others. For example, when considering words
 over the alphabet $\{a,b,c\}$, it seems much easier to determine whether a word
@@ -154,25 +154,86 @@ represented by a double of input and stack operation.
   \node[state,accepting] (q_3) [right=of q_2]{$q_3$};
   \path[->]
   (q_0) edge node {$\epsilon,\epsilon\to\$$} (q_1)
-  (q_1) edge [loop above] node[text width=1.5cm,align=center] {$0,\epsilon\to 0$
-    $1,\epsilon\to 1$} ()
+  (q_1) edge [loop above] node[text width=1.5cm,align=center] {$a,\epsilon\to a$
+    $b,\epsilon\to b$} ()
   edge node {$\epsilon,\epsilon\to\epsilon$} (q_2)
-  (q_2) edge [loop above] node[text width=1.5cm,align=center] {$0,0\to\epsilon$
-    $1,1\to\epsilon$} ()
+  (q_2) edge [loop above] node[text width=1.5cm,align=center] {$a,a\to\epsilon$
+    $b,b\to\epsilon$} ()
   edge node {$\epsilon,\$\to\epsilon$} (q_3);  
   \end{tikzpicture}
 \end{figure}
-\par
+
+\subsection{Turing Machines}
 Finally, we arrive at the \ac{TM}, devised by Alan Turing in his paper \emph{On
   Computable Numbers, With an Application To the Entscheidungsproblem}
 ~\cite{turing37_comput_number_with_applic_to_entsc}. \aclp{TM} offer an
-unrestricted model of computation,\todo{Discussion of TMs}
-\section{Undecidability}
+unrestricted model of computation, equivalent to the general purpose computers
+that we are familiar with today. This equivalence is expressed by a pair of
+concepts called \emph{Turing completeness} and \emph{Turing equivalence}. A
+system of computation is Turing complete if it is able to simulate an arbitrary
+Turing machine, and is Turing Equivalent if there is a Turing machine that can
+simulate it. Essentially, Turing completeness is being \emph{at least} as
+powerful as Turing machines, while Turing equivalence is being \emph{exactly} as
+powerful as a Turing machine. Turing machines are themselves Turing complete, as are other
+abstract models of computation such as the \emph{lambda calculus}. General
+purpose programming languages are also considered Turing complete, because
+although they are run on real machines with finite storage space, this space is
+theoretically unbounded, and thus the expressive power of the languages are
+unbounded even if any particular instance of a program run on an actual machine
+would not be able to simulate all Turing machines. 
+\par
+A basic informal definition of a Turing machine is a collection of an infinite tape
+of discrete cells,
+a head that can move back and forth between cells on the tape as well as read and write
+from the tape, a register that stores the current state of the machine out of a
+finite set of possible states and starts in a start state, a set of accepting
+states, and a transition function that at each step allows tells the machine
+wether to write to the tape, move the head, or change states. There are
+modifications to this definition which allow for multiple tapes or
+nondeterminism, but they are all equivalent to the basic
+definition. Additionally, a \ac{PDA} with two stacks is equivalent to a Turing
+machine, as the stacks can be thought of as extending out in opposite
+directions, forming an infinite tape.
 
+\section{Undecidability}
+In the previous section we were concerned primarily with problems that our
+models of computation were able to solve. However, much as an \ac{FSA} is unable
+to solve the problem of whether a string is a palindrome, there are problems
+that are too difficult for even \aclp{TM} to solve. When a decision problem $A$
+cannot be solved by a model $\mathcal{M}$, we say that $A$ is undecidable for
+$\mathcal{M}$. When we just say that $A$ is undecidable, we mean that it is
+undecidable for \acp{TM}. \par
+It can be difficult to come up with obvious examples of problems that are
+undecidable. After all, we usually talk about sets based on the patterns they
+exhibit, and those patterns are typically simple enough to be enumerated by a
+computer. A promising place to look for problems that a model cannot decide is
+problems about the model itself, and the most famous undecidable problem is of
+that type. The Halting Problem, introduced by Alan Turing in the same paper
+where he introduced the Turing machine, asks whether it is possible to contsruct
+a Turing machine that can determine whether a Turing machine run on a given
+input will ever halt and return an
+answer~\cite{turing37_comput_number_with_applic_to_entsc}. The proof is through
+a method called \emph{diagonalizdation}, due to its similarity to Cantor's
+diagonal argument. 
 
 \begin{prob}[The Halting Problem]
   \label{prob:halting}
-  \cite{turing37_comput_number_with_applic_to_entsc}
+  Let $M$ be a Turing Machine and $i$ be an input. If $M$ is run on $i$, will it
+  eventually halt?
+  \begin{proof}[Proof of Undecidability]
+    Suppose for the sake of contradiction that the halting problem is
+    decidable. Then, there exists some machine
+    $\mathcal{O}$ that can decide the halting problem. Then, we can construct a
+    Turing machine $H$ that simulates $\mathcal{O}$ on its input $(M,i)$. In the
+    case where $\mathcal{O}(M,i)$ accepts, $H$ enters into an infinite
+    loop, whereas in the case where $\mathcal{O}(M,i)$ does not accept, $H$
+    halts. Consider $H(H,\epsilon)$. If $H$ halts, then
+    $\mathcal{O}(H,\epsilon)$ accepts, and so $H$ enters an infinite loop, and
+    so it does not halt. But if $H$ does not halt, then
+    $\mathcal{O}(H,\epsilon)$ does not accept, so $H$ halts. This is a
+    contradiction, so our premise that the halting problem is decidable must be false.
+  \end{proof}
+  
   \cite{sipser13:_introd_theor_comput}
 \end{prob}
 \begin{thm}[Rice's Theorem] \cite{kozen99_autom}
@@ -213,9 +274,9 @@ that is known to be decidable.
  A Context Free Grammar is...
 \end{defn}
 
-\begin{defn}
-  A Pushdown Automata is...
-\end{defn}
+% \begin{defn}
+%   A Pushdown Automata is...
+% \end{defn}
 
 \begin{thm}[Equivalence of CFGs and Pushdown Automata]
   \cite{hopcroft07:_introd_autom_theor_languag_comput}
@@ -427,15 +488,6 @@ or \emph{degrees of unsolvability}, a concept first introduced in
   Completeness
 \end{defn}
 
-\subsection{Properties and Structure}
-\begin{lem}
-  The set $\mathcal{D}$ is of cardinality $2^{\aleph_0}$.
-\end{lem}
-
-\begin{lem}
-  Every Turing degree contains countably infinite elements.
-\end{lem}
-
 While it is simple to explicitly state problems lying in the lower degrees,
 in order to more easily study the general structure of $\mathcal{D}$, we
 introduce a new operator, \emph{jump}, that increments Turing degrees. Much of
@@ -445,14 +497,28 @@ the behavior of this operator was shown in a join paper by Kleene and Post~\cite
   The jump operator
 \end{defn}
 
-\begin{prob}[Post's Problem]
-  \cite{post44:_recur}
+One of the earliest questions about the structure of the Turing degrees was
+Post's Problem, first posed in 1944~\cite{post44:_recur}. It was solved
+independently by Friedberg and Mucnik in the late 1950s using a technique
+called the ``priority method''~\cite{Friedberg236, muchnik1956unsolvability}. A solution that does not
+involve a priority argument was provided by Ku\v{c}era in 1986~\cite{Kucera:1986:APS:22416.22462}.
+
+\begin{prob}[Post's Problem]  
+  Does there exist a computably enumerable degree strictly between $0$ and $0'$?
   % Marchenkov 1976
   % Independently by Friedberg 57, Mucnik 56/58 using priority method
   % Priority free solution Kucer 1986''
   % ``Natural'' solns don't exist
-  \cite{Friedberg236}
 \end{prob}
+
+\subsection{Properties and Structure}
+\begin{lem}
+  The set $\mathcal{D}$ is of cardinality $2^{\aleph_0}$.
+\end{lem}
+
+\begin{lem}
+  Every Turing degree contains countably infinite elements.
+\end{lem}
 
 % Myhill 56 c.e.lattice
 
