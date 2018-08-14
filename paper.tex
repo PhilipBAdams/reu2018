@@ -11,7 +11,7 @@
 \usepackage{mathrsfs}
 \usepackage{todonotes}
 \usepackage{tikz}
-\usetikzlibrary{automata,positioning}
+\usetikzlibrary{automata,positioning,shapes}
 \usepackage[nolist]{acronym}
 
 %--------Theorem Environments--------
@@ -82,6 +82,7 @@
   \acroplural{FSA}[FSAs]{Finite State Automata}
   \acro{CFG}[CFG]{Context-Free Grammar}
   \acro{CFL}[CFL]{Context-Free Language}
+  \acro{DCFL}[DCFL]{Deterministic Context-Free Language}
 \end{acronym}
 
 \section{Introduction}
@@ -90,6 +91,7 @@ Historical overview of the field, motivation for study
 \cite{soare16_turin_comput}
 \cite{soare1999history}
 \cite{lerman16:_degrees_unsol}
+\todo{}
 \subsection{Decision Problems}
 
 
@@ -233,17 +235,15 @@ diagonal argument.
     $\mathcal{O}(H,\epsilon)$ does not accept, so $H$ halts. This is a
     contradiction, so our premise that the halting problem is decidable must be false.
   \end{proof}
-  
-  \cite{sipser13:_introd_theor_comput}
 \end{prob}
-\begin{thm}[Rice's Theorem] \cite{kozen99_autom}
-  % Proof by reduction to the halting problem?
-\end{thm}
-\subsection{Incompleteness}
-\begin{thm}[G\"odel's Incompleteness Theorem] 
-  % Kleene 1943? Also shown in hopcroft 1979
-  \cite{kleene43_recur_predic_quant}
-\end{thm}
+% \begin{thm}[Rice's Theorem] \cite{kozen99_autom}
+%   % Proof by reduction to the halting problem?
+% \end{thm}
+% \subsection{Incompleteness}
+% \begin{thm}[G\"odel's Incompleteness Theorem] 
+%   % Kleene 1943? Also shown in hopcroft 1979
+%   \cite{kleene43_recur_predic_quant}
+% \end{thm}
 \subsection{Reducibility}
 \label{subsec:reducibility}
 While it is possible to prove that a problem is undecidable directly, as in
@@ -268,30 +268,91 @@ that is known to be decidable.
 
 \cite{kleene80_introd}
 
-\section{Context Free Grammars}
+\section{Context Free Languages}
 
 \begin{defn}
- A Context Free Grammar is...
+ A \ac{CFG} is a finite set of nonterminal symbols, a finite set of terminal
+ symbols, a finite number of production rules that produce a string of terminal
+ and nonterminal symbols from a nonterminal symbol, and a starting symbol.
 \end{defn}
 
-% \begin{defn}
-%   A Pushdown Automata is...
-% \end{defn}
+\begin{defn}
+  The \emph{language} of a \ac{CFG} is the set of words that can be formed by
+  the successive application of production rules to the start symbol. These
+  languages are called \acp{CFL}.
+\end{defn}
 
-\begin{thm}[Equivalence of CFGs and Pushdown Automata]
-  \cite{hopcroft07:_introd_autom_theor_languag_comput}
+\acp{CFG} provide another useful model of computation. However, the languages
+that they are able to
+express are exactly the same set of languages as \acp{PDA}~\cite{hopcroft07:_introd_autom_theor_languag_comput}. This equivalence allows
+us to choose between the two models and use the one that is most useful for
+proving facts about these languages.
+
+\begin{thm}[Closure Properties of \acp{CFL}]
+  \aclp{CFG} have a variety of closure properties:
+  \begin{itemize}
+  \item Let $L_1,L_2$ be \acp{CFL}. Then $L_1\cup L_2$ is a \ac{CFL}.
+    \begin{proof}
+      The languages $L_1$ and $L_2$ are \aclp{CFL}, so there exist \aclp{PDA} $P_1$ and $P_2$
+      that decide them. Consider the \ac{PDA} $U$ shown in
+      Figure~\ref{pda:union}, which simulates $P_1$ and $P_2$ on the input. $U$
+      is a \ac{PDA} that decides $L_1\cup L_2$, so it follows that
+      $L_1\cup L_2$ is a \ac{CFL}.
+      \begin{figure}[h]
+        \caption{$U$, a \ac{PDA} that simulates $P_1$ and $P_2$.}
+        \label{pda:union}
+         \begin{tikzpicture}[shorten >=1pt,node distance=3cm,on grid,auto]
+  \node[state,initial] (q_0) {$q_0$};
+  \node[state,diamond] (P_1) [above right=of q_0]{$P_1$};
+  \node[state,diamond] (P_2) [below right=of q_0]{$P_2$};
+  \draw[->]
+  (q_0) edge node {$\epsilon,\epsilon\to\epsilon$} (P_1);
+  \draw[->]
+  (q_0)
+  edge node {$\epsilon,\epsilon\to\epsilon$} (P_2);
+  \end{tikzpicture}
+      \end{figure}
+    \end{proof}
+  \item Let $L_1,L_2$ be \acp{CFL}. Then the concatenation \[
+      \{w_1w_2 \mid w_1\in L_1, w_2 \in L_2\}
+    \]
+    is a \ac{CFL}.
+    \begin{proof}
+      The languages $L_1$ and $L_2$ are \aclp{CFL}, so there exist \acp{CFG}
+      $G_1,G_2$ with start symbols $S_1,S_2$ that produce them. Suppose, without loss of generality, that
+      $G_1,G_2$ have no nonterminal symbols in common (if they do, then we can rename
+      them). Consider the grammar $S \rightarrow S_1S_2$. Then, this is a
+      context free grammar, and its language is the concatenation of $L_1$ and
+      $L_2$. So, the concatenation of $L_1$ and $L_2$ is a \ac{CFL}.
+    \end{proof}
+  \item Let $L$ be a \ac{CFL}. Then,
+    \[
+      L^* = \bigcup_{i \geq 0}\{w_1 \dots w_k\dots w_i \mid w_k\in L\}
+    \]
+    is a \ac{CFL}.
+    \begin{proof}
+      The language $L$ is a \ac{CFL}, so there exists a \ac{CFG} $G$ with start
+      symbol $S_1$ that produces it. Consider the grammar given by $S\rightarrow
+      S_1S\mid\epsilon$. This is a \ac{CFG} that produces $L^*$, so it follows
+      that $L^*$ is a \ac{CFL}.
+    \end{proof}
+    \item Intersection with regular languages~\cite{hopcroft07:_introd_autom_theor_languag_comput}.\todo{}
+  \end{itemize}
 \end{thm}
-\begin{thm}[Closure Properties]
-  \cite{sipser13:_introd_theor_comput}
-  Union, Concat, Star, intersection with regular, substitution
-\end{thm}
+
 \begin{prob}[Emptiness]
   \label{prob:cfg:emptiness}
-Let $G$ be a context-free grammar. Is $L(G)=\varnothing$?
+  Let $G$ be a context-free grammar. Is $L(G)=\varnothing$?
+  \begin{proof}[Proof of Decidability]
+    \todo{}
+  \end{proof}
 \end{prob}
 
 \begin{prob}[Finite]
-Let $G$ be a context-free grammar. Is $L(G)$ finite?
+  Let $G$ be a context-free grammar. Is $L(G)$ finite?
+  \begin{proof}[Proof of Decidability]
+    \todo{}
+  \end{proof}
 \end{prob}
 
 \begin{prob}[Regular Containment]
@@ -383,7 +444,10 @@ reduction to the Post correspondence problem.
 \end{prob}
 
 \begin{defn}
-An ambiguous grammar is...
+We say that a \acl{CFG} is \emph{ambiguous} if there is more than one way to
+apply the production rules to reach an accepted word, assuming a production rule
+is always applied to the leftmost nonterminal symbol. This is equivalent to
+stating that there is more than one parse tree that parses an accepted word.
 \end{defn}
 
 \begin{prob}[Ambiguity]
@@ -432,20 +496,27 @@ An ambiguous grammar is...
   \end{proof}
 \end{prob}
 
-\subsubsection{Problems decidable for Deterministic CFLs}
+\subsubsection{Problems decidable for DCFLs}
 \cite{ginsburg65:_deter}
 \begin{defn}
-  A deterministic context-free language is a language accepted by a
-  deterministic pushdown automata.
+  A \ac{DCFL} is a language accepted by a
+  \acl{DPDA}.
 \end{defn}
 
 \begin{thm}[Closure Properties]
-  If $L$ is a deterministic context-free language, then $\overline{L}$ is a
-  deterministic context-free language.
+  \label{dcfl:complement}
+  If $L$ is \ac{DCFL}, then $\overline{L}$ is a
+  \ac{DCFL}. \todo{}
 \end{thm}
 
 \begin{prob}
-  Let $L$ be a deterministic context-free language. Is $L = \Sigma^*$?
+  Let $L$ be a \ac{DCFL}. Is $L = \Sigma^*$?
+  \begin{proof}[Proof of Decidability]
+    We have that $L$ is a \ac{DCFL}, so by Theorem~\ref{dcfl:complement},
+    $\overline{L}$ is also a $\ac{DCFL}$. By Problem~\ref{prob:cfg:emptiness},
+    we have that whether $\overline{L}$ is empty is decidable, so it follows
+    that the question of whether $L = \Sigma^*$ is also decidable.
+  \end{proof}
 \end{prob}
 
 The decidability of the following problem was an open problem in the field of
@@ -454,7 +525,7 @@ computability theory from 1965, when it was introduced by Ginsburg and Greibach 
 
 \begin{prob}[The Equivalence Problem for Deterministic CFGs]
   Let $L_1,L_2$ be deterministic context-free languages. Is $L_1=L_2$?
-
+\todo{}
 \end{prob}
 
 \section{Turing Degrees}
@@ -481,12 +552,23 @@ or \emph{degrees of unsolvability}, a concept first introduced in
 \end{lem}
 
 \begin{defn}
-  Computably Enumerable
+  An oracle machine for a degree $A$, denoted $\mathcal{O}_A$, is a Turing
+  machine equipped with a function that is able to decide $A$.
 \end{defn}
 
 \begin{defn}
-  Completeness
+  A problem $P$ is called \emph{computably enumerable} or \emph{semidecidable}
+  for some degree $d\in\mathcal{D}$ if there exists a problem $A\in d$ such that
+  it is possible to construct an oracle machine $\mathcal{O}_A$ such that
+  $\mathcal{O}_A$ halts for all the inputs where $P$ is true, and does not halt
+  on all the inputs for which $P$ is false. If $A=\varnothing$, and so the
+  oracle machine does not have an oracle, then we simply say that $P$ is
+  computably enumerable, semidecidable, or \emph{Turing recognizable}.
 \end{defn}
+\begin{rem}
+  The Halting problem, Problem~\ref{prob:halting}, is Turing recognizable. The
+  machine that recognizes the problem simply simulates the input machine.
+\end{rem}
 
 While it is simple to explicitly state problems lying in the lower degrees,
 in order to more easily study the general structure of $\mathcal{D}$, we
@@ -494,8 +576,23 @@ introduce a new operator, \emph{jump}, that increments Turing degrees. Much of
 the behavior of this operator was shown in a join paper by Kleene and Post~\cite{kleene54_upper_semi_lattic_degrees_recur_unsol}.
 
 \begin{defn}
-  The jump operator
+  The jump of $A$, denoted $A'$, is degree of the halting problem for oracle
+  machines for $A$.
 \end{defn}
+
+The jump operator has many properties that make it convenient for studying the
+Turing degrees, which are listed below. Further commentary on the jump operator
+and its properties is available in Robert Soare's book \emph{History of Computability}~\cite{soare16_turin_comput}.
+\begin{fact}
+  The jump operator has many properties that make it convenient for studying the
+Turing degrees, some of which are listed below. Further commentary on the jump operator
+and its properties is available in Robert Soare's book \emph{History of Computability}~\cite{soare16_turin_comput}.
+  \begin{itemize}
+  \item $A'$ is computably enumerable in $A$.
+  \item $A' \not\leq_T A$.
+  \item If $B=_TA$ then $B'=_TA'$.
+  \end{itemize}
+\end{fact}
 
 One of the earliest questions about the structure of the Turing degrees was
 Post's Problem, first posed in 1944~\cite{post44:_recur}. It was solved
@@ -521,16 +618,28 @@ involve a priority argument was provided by Ku\v{c}era in 1986~\cite{Kucera:1986
 \end{lem}
 
 % Myhill 56 c.e.lattice
+\begin{defn}
+  A partially ordered set $S$ is said to form an \emph{upper semilattice} if, for every
+ $x,y\in S$, there exists some element $z\in S$ such that $z \geq x,y$ and
+ for all $w\in A$ such that $w\geq x,y$, we have that $w \geq z$. In other
+ words, $x$ and $y$ have a supremum.
+\end{defn}
 
-\begin{lem}
-  D does not form a lattice
-  \cite{kleene54_upper_semi_lattic_degrees_recur_unsol}
-\end{lem}
+\begin{defn}
+  A partially ordered set $S$ is said to form a \emph{lattice} if all pairs
+  $\{x,y\}\in S$ have both an infinum and a supremum.
+\end{defn}
+
+
 \begin{thm}
-  D forms an upper semi-lattice
+  $\mathcal{D}$ forms an upper semilattice.
   % Kleene-Post 54 Degrees upper semi-lattice, jump an operator on degrees
   \cite{kleene54_upper_semi_lattic_degrees_recur_unsol}
 \end{thm}
+\begin{lem}
+ $ \mathcal{D}$ does not form a lattice.
+  \cite{kleene54_upper_semi_lattic_degrees_recur_unsol}
+\end{lem}
 
 \begin{thm}
   Existence of minimal degrees
@@ -552,8 +661,8 @@ Theory of D Undecidable
 
 Theory of D equivalent to to second-order arithmetic \cite{simpson77:_first_order_theor_degrees_recur_unsol}
 
-\subsection{Turing Degrees of Problems related to CFGs}
-\cite{REEDY197577}
+% \subsection{Turing Degrees of Problems related to CFGs}
+% \cite{REEDY197577}
 
 
 
