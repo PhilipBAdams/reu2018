@@ -95,7 +95,7 @@ Historical overview of the field, motivation for study
 \subsection{Decision Problems}
 What does it mean to \emph{solve a problem}? What is a \emph{problem}, anyways?
 These questions may seem superfluous, they must be addressed in order to build a
-well defined theory of the difficulty of problems. In this paper, we discuss a
+well defined theory of the difficulty and computability of problems. In this paper, we discuss a
 specific type of problem, the \emph{decision problem}. Decision problems are
 essentially sets of natural numbers, and to solve the problem is to be able to
 decide whether any given element is inside the set or not. Because set theory is
@@ -605,13 +605,12 @@ the behavior of this operator was shown in a join paper by Kleene and Post~\cite
   machines for $A$.
 \end{defn}
 
-The jump operator has many properties that make it convenient for studying the
-Turing degrees, which are listed below. Further commentary on the jump operator
-and its properties is available in Robert Soare's book \emph{History of Computability}~\cite{soare16_turin_comput}.
 \begin{fact}
   The jump operator has many properties that make it convenient for studying the
 Turing degrees, some of which are listed below. Further commentary on the jump operator
-and its properties is available in Robert Soare's book \emph{History of Computability}~\cite{soare16_turin_comput}.
+and its properties is available in Robert Soare's book \emph{Turing
+  Computability}~\cite{soare16_turin_comput}, as well as in Shore and Slaman's
+paper \emph{Defining the Turing Jump}~\cite{shore99:_defin_turin_jump}.
   \begin{itemize}
   \item $A'$ is computably enumerable in $A$.
   \item $A' \not\leq_T A$.
@@ -715,26 +714,39 @@ Kleene's \emph{The Upper Semi-Lattice of Degrees of Recursive
   Unsolvability}~\cite{kleene54_upper_semi_lattic_degrees_recur_unsol}. A simpler proof
 of Fact~\ref{fact:not_lat} is available in Robert Soare's book \emph{Turing Computability}~\cite[pp.~142--144]{soare16_turin_comput}.
 \end{rem}
+ A final result respecting the structure of $\mathcal{D}$ is the existence of
+ \emph{minimal degrees}. A degree $A$ is minimal if $A \neq_T 0$ ($A$ is not
+ Turing-decidable), but there does not exist any degree $B\in \mathcal{D}$ such
+ that $0 <_T B <_T A$. The existence of such degrees was first shown by Spector
+ in 1956~\cite{spector56_degrees_recur_unsol}. An alternative proof is by
+ Shoenfield in 1966~\cite{shoenfield66_theor_minim_degrees}.
 
-\begin{thm}
-  Existence of minimal degrees
-  % Spector 56,Shoenfield 66 (Better)
-  \cite{spector56_degrees_recur_unsol}
-  \cite{shoenfield66_theor_minim_degrees}
-\end{thm}
+\section{Further Reading}
+The study of the Turing degrees was a very active topic in the late
+20\textsuperscript{th} and early 21\textsuperscript{st} centuries, and this
+paper has just scratched the surface of the field. \par
+Readers particularly interested in the structure of the computably enumerable
+degrees might be interested in a result by Sacks in 1964 showing their
+density~\cite{sacks64:_recur_enumer_degrees_dense}, while those interested in
+\aclp{CFG} or the Turing degrees of problems about them should consult \cite{REEDY197577} and
+\cite{ginsburg66:_mathem_theor_contex_languag}
+\cite{hopcroft07:_introd_autom_theor_languag_comput}\todo{chapter for cfgs}. For excellent, comprehensive,
+and more rigorous textbooks on the study of Turing computability and the Turing
+degrees, consider \cite{soare16_turin_comput} \cite{lerman16:_degrees_unsol} or
+the classic text \cite{kleene80_introd}.
 
-\begin{thm}
-  The c.e. degrees are dense
-  \cite{sacks64:_recur_enumer_degrees_dense}
-\end{thm}
+% \begin{thm}
+%   The c.e. degrees are dense
+%   \cite{sacks64:_recur_enumer_degrees_dense}
+% \end{thm}
 
-Homogeneity problems
-% Feiner 1970, Shore 1979
+% Homogeneity problems
+% % Feiner 1970, Shore 1979
 
-Theory of D Undecidable
+% Theory of D Undecidable
 
 
-Theory of D equivalent to to second-order arithmetic \cite{simpson77:_first_order_theor_degrees_recur_unsol}
+% Theory of D equivalent to to second-order arithmetic \cite{simpson77:_first_order_theor_degrees_recur_unsol}
 
 % \subsection{Turing Degrees of Problems related to CFGs}
 % \cite{REEDY197577}
