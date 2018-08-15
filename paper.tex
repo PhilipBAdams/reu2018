@@ -93,6 +93,21 @@ Historical overview of the field, motivation for study
 \cite{lerman16:_degrees_unsol}
 \todo{}
 \subsection{Decision Problems}
+What does it mean to \emph{solve a problem}? What is a \emph{problem}, anyways?
+These questions may seem superfluous, they must be addressed in order to build a
+well defined theory of the difficulty of problems. In this paper, we discuss a
+specific type of problem, the \emph{decision problem}. Decision problems are
+essentially sets of natural numbers, and to solve the problem is to be able to
+decide whether any given element is inside the set or not. Because set theory is
+commonly used as the foundational system of mathematics, we can convert problems
+expressed in terms of more complex mathematical objects into decision problems,
+and thus by studying decision problems can build a system that is able to assess
+the computability of all mathematical problems. For example, we can express
+strings over the alphabet $\{0,1\}$ as sets of natural numbers, and thus can
+study problems about languages of such strings with the same tools we use for
+decision problems. Going further, we can express the source code of a computer
+program as a string over the alphabet $\{0,1\}$, and so can consider questions
+about the behavior of computer programs.
 
 
 \section{Models of Computation}
@@ -506,7 +521,17 @@ stating that there is more than one parse tree that parses an accepted word.
 \begin{thm}[Closure Properties]
   \label{dcfl:complement}
   If $L$ is \ac{DCFL}, then $\overline{L}$ is a
-  \ac{DCFL}. \todo{}
+  \ac{DCFL}.
+  \begin{proof}
+    Let $L$ be a \ac{DCFL}. Then, there exists some \ac{DPDA} $P$ that
+    recognizes $L$. We can construct a new \ac{DPDA} $P'$ by complementing the
+    accepting states of $P$. Because $P$ is a \ac{DPDA} and thus is only in one
+    state at a time, $P'$ will recognize $\overline{L}$ and thus $\overline{L}$
+    is a \ac{DCFL}. This would not hold if $P$ were only a \ac{PDA}, since a
+    nondeterministic \ac{PDA} accepts if \emph{any} branch ends on an accepting
+    state, and thus complementing the accepting states would not recognize the
+    complement of the originally recognized language.
+\end{proof}
 \end{thm}
 
 \begin{prob}
@@ -547,9 +572,9 @@ We call the equivalence classes produced by this relation \emph{Turing degrees}
 or \emph{degrees of unsolvability}, a concept first introduced in
 1944 by Emil Post~\cite{post44:_recur}. We write the set of all such degrees as $\mathcal{D}$.
 
-\begin{lem}
+\begin{fact}
   The relation $\leq_T$ is a partial ordering of $\mathcal{D}$.
-\end{lem}
+\end{fact}
 
 \begin{defn}
   An oracle machine for a degree $A$, denoted $\mathcal{O}_A$, is a Turing
@@ -609,12 +634,24 @@ involve a priority argument was provided by Ku\v{c}era in 1986~\cite{Kucera:1986
 \end{prob}
 
 \subsection{Properties and Structure}
-\begin{lem}
-  The set $\mathcal{D}$ is of cardinality $2^{\aleph_0}$.
-\end{lem}
+
 
 \begin{lem}
-  Every Turing degree contains countably infinite elements.
+  \label{lem:deg_count}
+  Every Turing degree is of cardinality $\aleph_0$.
+\end{lem}
+
+
+\begin{lem}
+  The set $\mathcal{D}$ is of cardinality $2^{\aleph_0}$.
+  \begin{proof}
+    First, observe that the cardinality of $\mathcal{D}$ is at most
+    $2^{\aleph_0}$, since it is a set of sets of decision problems and there are
+    at most $2^{\aleph_0}$ decision problems since decision problems are subsets
+    of $\mathbb{N}$.\par Now, recall from Lemma~\ref{lem:deg_count} that each
+    degree contains $\aleph_0$ decision problems. From this, it follows that
+    there must be at least $2^{\aleph_0}$ degrees. So, we have that $\lvert \mathcal{D} \rvert=2^{\aleph_0}$.
+  \end{proof}
 \end{lem}
 
 % Myhill 56 c.e.lattice
