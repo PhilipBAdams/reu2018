@@ -697,22 +697,23 @@ involve a priority argument was provided by Ku\v{c}era in 1986~\cite{Kucera:1986
     B$. \par Now, let $W\in \mathcal{D}$ such that $W \geq
     A,B$ and let $P\in A\vee B$. Then, we have that for every $n$, we can
     determine whether $n\in P$ by determining whether $n$ is even and
-    $\frac{n}{2}\inP_1$ or odd and $\frac{n-1}{2}\in P_2$. Since both the parity
+    $\frac{n}{2}\in P_1$ or odd and $\frac{n-1}{2}\in P_2$. Since both the parity
     of a number and $P_1$ and $P_2$ are decidable in $W$, it follows that
-    $A\veeB$ is decidable in $W$, and thus $A\vee B \leq_T W$. So, it follows
+    $A\vee B$ is decidable in $W$, and thus $A\vee B \leq_T W$. So, it follows
     that $A\vee B = \sup(A,B)$. This holds for all $A,B\in\mathcal{D}$, so it
     follows that $\mathcal{D}$ forms an upper semilattice.  
   \end{proof}
 \end{thm}
 
-\begin{lem}
-  \label{lem:not_lat}
+\begin{fact}
+  \label{fact:not_lat}
   $ \mathcal{D}$ does not form a lattice.
-
-\end{lem}
+\end{fact}
 \begin{rem}
-Theorem~\ref{thm:up_sem} and Lemma~\ref{lem:not_lat} were first shown in
-Kleene's \emph{The Upper Semi-Lattice of Degrees of Recursive Unsolvability}~\cite{kleene54_upper_semi_lattic_degrees_recur_unsol}.
+Theorem~\ref{thm:up_sem} and Fact~\ref{fact:not_lat} were first shown in
+Kleene's \emph{The Upper Semi-Lattice of Degrees of Recursive
+  Unsolvability}~\cite{kleene54_upper_semi_lattic_degrees_recur_unsol}. A simpler proof
+of Fact~\ref{fact:not_lat} is available in Robert Soare's book \emph{Turing Computability}~\cite[pp.~142--144]{soare16_turin_comput}.
 \end{rem}
 
 \begin{thm}
