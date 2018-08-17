@@ -86,15 +86,44 @@
 \end{acronym}
 
 \section{Introduction}
-Historical overview of the field, motivation for study
-\cite{ambos-spies06:_degrees_unsol}
-\cite{soare16_turin_comput}
-\cite{soare1999history}
-\cite{lerman16:_degrees_unsol}
-\todo{}
+
+The field of computability theory focuses on abstract models of computation and
+the sorts of problems that they are able to solve. Unlike complexity theory,
+which is focused on the resources required to perform a computation,
+computability theory focuses only on whether a certain computation is possible
+on a given machine. The practical application of the theory focuses on models of
+computation of equivalent power to general purpose computers, allowing for it to
+be determined whether it possible to solve specific problems on actual
+machines. The Church-Turing thesis, a significant conjecture in the field,
+states that the model that we use to understand the power of general purpose
+computers has the same power as humans applying algorithms. If true, it means
+that it is not possible to design a computational process that is able to solve
+more problems than a general-purpose computer. However, even if it is true, it is still possible to
+imagine models that have more power than general purpose computers by endowing
+them with \emph{oracles} the ability to evaluate problems that we know
+general-purpose computers cannot. Because of this, computability is still able
+to draw distinctions in the difficulty of problems too difficult for
+general-purpose computers to solve, dividing them into \emph{Turing degrees}, or
+\emph{degrees of unsolvability}. Additionally, it is possible to construct
+models of computation with less power than general-purpose computers, and thus
+classify the difficulty of problems that general-purpose computers can solve. We
+can also show the differences in difficulty of problems simply by showing that
+it is possible to use the answer of one problem to solve another, a technique
+called \emph{reduction}. So, it is possible to create an infinite hierarchy
+describing the difficulty of problems, and to investigate the sort of structure
+this hierarchy takes. 
+
+
+% Historical overview of the field, motivation for study
+
+
+% \cite{soare16_turin_comput}
+% \cite{soare1999history}
+% \cite{lerman16:_degrees_unsol}
+% \todo{}
 \subsection{Decision Problems}
 What does it mean to \emph{solve a problem}? What is a \emph{problem}, anyways?
-These questions may seem superfluous, they must be addressed in order to build a
+These questions may seem esoteric, they must be addressed in order to build a
 well defined theory of the difficulty and computability of problems. In this paper, we discuss a
 specific type of problem, the \emph{decision problem}. Decision problems are
 essentially sets of natural numbers, and to solve the problem is to be able to
@@ -277,11 +306,7 @@ that some problem $A$ which is already known to be undecidable is reducible to
 $B$. Since $A$ cannot be harder than $B$, it follows that $B$ must also be
 undecidable. Alternatively, if we would like to show that some problem $A$ is
 decidable, it is sufficient to show that it is reducible to some problem $B$
-that is known to be decidable.
-\cite{sipser13:_introd_theor_comput}
-\cite{post44:_recur}
-
-\cite{kleene80_introd}
+that is known to be decidable~\cite{sipser13:_introd_theor_comput,post44:_recur,kleene80_introd}.
 
 \section{Context Free Languages}
 
@@ -351,24 +376,15 @@ proving facts about these languages.
       S_1S\mid\epsilon$. This is a \ac{CFG} that produces $L^*$, so it follows
       that $L^*$ is a \ac{CFL}.
     \end{proof}
-    \item Intersection with regular languages~\cite{hopcroft07:_introd_autom_theor_languag_comput}.\todo{}
+    \item Intersection with regular languages~\cite{hopcroft07:_introd_autom_theor_languag_comput}.
   \end{itemize}
 \end{thm}
 
-\begin{prob}[Emptiness]
-  \label{prob:cfg:emptiness}
-  Let $G$ be a context-free grammar. Is $L(G)=\varnothing$?
-  \begin{proof}[Proof of Decidability]
-    \todo{}
-  \end{proof}
-\end{prob}
-
-\begin{prob}[Finite]
-  Let $G$ be a context-free grammar. Is $L(G)$ finite?
-  \begin{proof}[Proof of Decidability]
-    \todo{}
-  \end{proof}
-\end{prob}
+We have that the emptiness and finiteness problems are decidable for
+\acp{CFG}~\cite{hopcroft07:_introd_autom_theor_languag_comput,
+  sipser13:_introd_theor_comput}. Another problem that is decidable for
+\acp{CFG} is the question of whether a given \ac{CFL} is wholly contained by a
+given regular language.
 
 \begin{prob}[Regular Containment]
 Take some context-free grammar $G$ and some regular language $R$. Is
@@ -382,7 +398,7 @@ $L(G)\subseteq R$?
   complement and context-free languages are closed under intersection with a
   regular language, so it follows that $L(G)\cap \overline{R}$ is a context free
   language. So the problem of containment by a regular language is reducible to
-  Problem~\ref{prob:cfg:emptiness}, the problem of emptiness, which is
+  the problem of emptiness, which we know to be
   decidable. So, the problem of containment by a regular language is decidable.
 \end{proof}
 
@@ -390,6 +406,7 @@ $L(G)\subseteq R$?
 
 \subsection{Undecidable Problems}
 \begin{prob}[The Post Correspondence Problem]
+  \label{prob:pcp}
   Consider some alphabet $\Sigma$ and two finite lists of words over $\Sigma$
   denoted $A = a_1,\dots,a_n$ and $B = b_1, \dots, b_n$. Then, does there exist
 some sequence of indices $(i_k),$ for $1 \leq k \leq K$ and for
@@ -414,6 +431,7 @@ undecidability of a variety of problems about context-free grammars through
 reduction to the Post correspondence problem.
 
 \begin{prob}[Disjointness]
+  \label{prob:disjointness}
   Let $P,Q$ be context-free grammars. Is $L(P)\cap L(Q) = \varnothing$?
   \begin{proof}[Proof of Undecidability]
     Consider the Post correspondence problem for two lists of words $A,B$. We
@@ -453,8 +471,28 @@ reduction to the Post correspondence problem.
   \[
     L(G) = \Sigma^*?
   \]
-  \begin{proof}[Proof of Undecidability]\todo{}
-    
+  \begin{proof}[Proof of Undecidability]
+    Consider the Post correspondence problem for two lists of words
+    $A,B$. Construct their corresponding grammars $G_A,G_B$ as in Problem~\ref{prob:disjointness}. Then, the languages
+    of these grammars are not just \acp{CFL}, but are also \aclp{DCFL},
+    discussed in detail in Subsection~\ref{sub:dcfl}, since we
+    can construct \aclp{DPDA} to accept them. We have that if
+    \[\overline{L(G_A)\cap L(G_B)} = \Sigma^*,\] then
+    \[L(G_A)\cap L(G_B)=\varnothing.\] Since these are grammars corresponding to
+    lists in a Post correspondence problem, it follows
+    that \[\overline{L(G_A)\cap L(G_B)} = \Sigma^*\] implies that there is no
+    solution to that Post correspondence problem. Additionally, by DeMorgan's Law, we have
+    that
+    \[
+      \overline{L(G_A)\cap L(G_B)} =
+      \overline{L(G_A)}\cup\overline{L(G_B)}.
+    \]
+    Since \acp{DCFL} are closed under complement and \acp{CFL} are closed under
+    union, it follows that $ \overline{L(G_A)\cap L(G_B)}$ is a \ac{CFL}, so the
+    question of whether it is empty is decidable. So, it follows that the
+    problem of universality reduces to Problem~\ref{prob:pcp}, the Post
+    correspondence problem, which is undecidable. So, we have that the
+    problem of universality is undecidable.
   \end{proof}
 \end{prob}
 
@@ -469,7 +507,7 @@ stating that there is more than one parse tree that parses an accepted word.
   Let $G$ be a context-free grammar. Is $G$ ambiguous?
   \begin{proof}[Proof of Undecidability]
     Consider the Post correspondence problem for two lists of words
-    $A,B$. Construct their corresponding grammars $G_A,G_B$. Now, consider the
+    $A,B$. Construct their corresponding grammars $G_A,G_B$ as in Problem~\ref{prob:disjointness}. Now, consider the
     grammar
     \[
       G \rightarrow G_A \vert G_B.
@@ -479,8 +517,7 @@ stating that there is more than one parse tree that parses an accepted word.
     reduces to the ambiguity problem, so the ambiguity problem is undecidable.
   \end{proof}
 \end{prob}
-\cite{greibach66:_unsol_recog_linear_contex_free_languag}
-\cite{Hopcroft1969}
+
 \begin{prob}
   Let $G$ be a context free grammars. Is $L(G)$ regular?
   \begin{proof}[Proof of Undecidability]
@@ -511,12 +548,14 @@ stating that there is more than one parse tree that parses an accepted word.
   \end{proof}
 \end{prob}
 
-\subsubsection{Problems decidable for DCFLs}
-\cite{ginsburg65:_deter}
+\subsection{Problems decidable for DCFLs}
+\label{sub:dcfl}
 \begin{defn}
   A \ac{DCFL} is a language accepted by a
-  \acl{DPDA}.
+  \acl{DPDA}. 
 \end{defn}
+\acp{DCFL} are another important classification of languages, and are a proper
+subset of \acp{CFL}. They are discussed in detail by Ginsburg~\cite{ginsburg65:_deter}.
 
 \begin{thm}[Closure Properties]
   \label{dcfl:complement}
@@ -538,8 +577,8 @@ stating that there is more than one parse tree that parses an accepted word.
   Let $L$ be a \ac{DCFL}. Is $L = \Sigma^*$?
   \begin{proof}[Proof of Decidability]
     We have that $L$ is a \ac{DCFL}, so by Theorem~\ref{dcfl:complement},
-    $\overline{L}$ is also a $\ac{DCFL}$. By Problem~\ref{prob:cfg:emptiness},
-    we have that whether $\overline{L}$ is empty is decidable, so it follows
+    $\overline{L}$ is also a $\ac{DCFL}$.
+    We know that whether $\overline{L}$ is empty is decidable, so it follows
     that the question of whether $L = \Sigma^*$ is also decidable.
   \end{proof}
 \end{prob}
@@ -616,18 +655,19 @@ paper \emph{Defining the Turing Jump}~\cite{shore99:_defin_turin_jump}.
 \end{fact}
 
 One of the earliest questions about the structure of the Turing degrees was
-Post's Problem, first posed in 1944~\cite{post44:_recur}. It was solved
+Post's Problem, first posed in 1944~\cite{post44:_recur}. Post's Problem asks
+whether there is a computably enumerable degree strictly between $0$ and $0'$. It was solved
 independently by Friedberg and Mucnik in the late 1950s using a technique
 called the ``priority method''~\cite{Friedberg236, muchnik1956unsolvability}. A solution that does not
 involve a priority argument was provided by Ku\v{c}era in 1986~\cite{Kucera:1986:APS:22416.22462}.
 
-\begin{prob}[Post's Problem]  
-  Does there exist a computably enumerable degree strictly between $0$ and $0'$?
-  % Marchenkov 1976
-  % Independently by Friedberg 57, Mucnik 56/58 using priority method
-  % Priority free solution Kucer 1986''
-  % ``Natural'' solns don't exist
-\end{prob}
+% \begin{prob}[Post's Problem]  
+%   Does there exist a computably enumerable degree strictly between $0$ and $0'$?
+%   % Marchenkov 1976
+%   % Independently by Friedberg 57, Mucnik 56/58 using priority method
+%   % Priority free solution Kucer 1986''
+%   % ``Natural'' solns don't exist
+% \end{prob}
 
 \subsection{Properties and Structure}
 
@@ -641,8 +681,13 @@ involve a priority argument was provided by Ku\v{c}era in 1986~\cite{Kucera:1986
     that for any given oracle, there are at most $\aleph_0$ oracle machines, so
     at most $\aleph_0$ problems are decidable for any Turing degree.
     \par
-    Now that an upper bound has been established,  we show that the cardinality
-    of each degree is exactly $\aleph_0$.\todo{}
+    Now that an upper bound has been established, we show that the cardinality
+    of each degree is exactly $\aleph_0$. Suppose, for the sake of contradiction,
+    that a Turing degree contained only a finite number of decision
+    problems. Then, the degree would be decidable, since every finite set is
+    decidable. But the only decidable degree is $0$, and in the previous section we
+    showed that the cardinality of $0$ is $\aleph_0$, so it follows that every
+    degree has cardinality $\aleph_0$.
   \end{proof}
 \end{lem}
 
@@ -735,7 +780,10 @@ theory~\cite[chs.~5--7]{hopcroft07:_introd_autom_theor_languag_comput}. \par For
 and more rigorous textbooks on the study of Turing computability and the Turing
 degrees, consider Soare and Lerman's
 books~\cite{soare16_turin_comput,lerman16:_degrees_unsol}, as well as
-Kleene's original text on the subject~\cite{kleene80_introd}.
+Kleene's original text on the subject~\cite{kleene80_introd}. \par
+Finally, Klaus Ambos-Spies and Peter Fejer's unpublished \emph{Degrees
+  of Unsolvability} provides an exhaustive overview of the history of the study
+of the Turing degrees~\cite{ambos-spies06:_degrees_unsol}.
 
 % \begin{thm}
 %   The c.e. degrees are dense
