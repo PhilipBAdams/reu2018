@@ -122,7 +122,7 @@ this hierarchy takes.
 % \cite{lerman16:_degrees_unsol}
 % \todo{}
 \subsection{Decision Problems}
-What does it mean to \emph{solve a problem}? What is a \emph{problem}, anyways?
+What does it mean to \emph{solve a problem}? What is a \emph{problem}?
 These questions may seem esoteric, they must be addressed in order to build a
 well defined theory of the difficulty and computability of problems. In this paper, we discuss a
 specific type of problem, the \emph{decision problem}. Decision problems are
@@ -138,6 +138,18 @@ decision problems. Going further, we can express the source code of a computer
 program as a string over the alphabet $\{0,1\}$, and so can consider questions
 about the behavior of computer programs.
 
+\subsection{Overview}
+This paper aims to develop the ideas presented in the introduction in a natural
+manner, and at a level of rigor accessible to an interested undergraduate. We
+begin by presenting a few simple models of computation and assessing their
+ability to compute various sets. We then introduce the Turing Machine, and
+mention alternative models of equivalent power. Next, we introduce the concepts
+of undecidability and Turing reducibility, and present the halting problem as an
+example of an undecidable problem. In the interest of developing a strong
+intuition regarding the concept of undecidability, we examine a variety of
+decidable and undecidable problems about \aclp{CFG}. Finally, we employ the
+Turing reduction to introduce a structure on the set of decision problems, and
+present some basic results about its properties.
 
 \section{Models of Computation}
 Upon consideration of different types of problems, it quickly becomes clear that
@@ -161,8 +173,10 @@ computation that have just enough power to solve each problem. The first problem
 can be solved by a \emph{\ac{FSA}}, a collection of a finite
 number of states, a transition function, and a set of accepting states. The
 \ac{FSA} accepts the input if the sequential application of each element to the
-input finishes in an accepting state, and rejects otherwise. \aclp{FSA} are often represented by charts as in Figure~\ref{fig:fsa}, a
-representation of an \ac{FSA} that decides the first problem.
+input finishes in an accepting state, and rejects otherwise. \aclp{FSA} are often represented by diagrams as in Figure~\ref{fig:fsa}, a
+representation of an \ac{FSA} that decides the first problem. An explanation of
+the conventions used in these diagrams is available in Sipser's
+\emph{Introduction to the Theory of Computation}~\cite[][pp. 34,114]{sipser13:_introd_theor_comput}
 \begin{figure}[h]
   \caption{An \ac{FSA} that determines whether a string ends in
     `$a$'.}
@@ -296,8 +310,9 @@ through comparison to problems which are already known to be undecidable. This
 comparison takes place through the technique of Turing reduction.
 \begin{defn}
   Let $A$ and $B$ be decision problems. We say that $A$ is \emph{Turing reducible}
-  to $B$ and write $A \leq_T B$ if, given a machine $D_B$ that decides $B$, it is possible to construct
-  a machine $D_A$ that decides $A$.
+  to $B$ and write $A \leq_T B$ if it is possible to construct an oracle
+  machine for $B$ that decides $A$ (see
+  Definition~\ref{defn:oracle}).
 \end{defn}
 So, we have that if $A$ is reducible to $B$, then $A$ can be no harder than $B$,
 because any solution to $B$ also leads to a solution of $B$. So, if we have some
@@ -613,6 +628,7 @@ or \emph{degrees of unsolvability}, a concept first introduced in
 \end{fact}
 
 \begin{defn}
+  \label{defn:oracle}
   An oracle machine for a degree $A$, denoted $\mathcal{O}_A$, is a Turing
   machine equipped with a function that is able to decide $A$.
 \end{defn}
@@ -656,10 +672,11 @@ paper \emph{Defining the Turing Jump}~\cite{shore99:_defin_turin_jump}.
 
 One of the earliest questions about the structure of the Turing degrees was
 Post's Problem, first posed in 1944~\cite{post44:_recur}. Post's Problem asks
-whether there is a computably enumerable degree strictly between $0$ and $0'$. It was solved
-independently by Friedberg and Mucnik in the late 1950s using a technique
-called the ``priority method''~\cite{Friedberg236, muchnik1956unsolvability}. A solution that does not
-involve a priority argument was provided by Ku\v{c}era in 1986~\cite{Kucera:1986:APS:22416.22462}.
+whether there is a computably enumerable degree strictly between $0$ and $0'$. A
+positive answer to the question was found independently by Friedberg and Mucnik in the late
+1950s using a technique called the ``priority method''~\cite{Friedberg236,
+  muchnik1956unsolvability}. A solution that does not involve a priority
+argument was provided by Ku\v{c}era in 1986~\cite{Kucera:1986:APS:22416.22462}.
 
 % \begin{prob}[Post's Problem]  
 %   Does there exist a computably enumerable degree strictly between $0$ and $0'$?
@@ -685,7 +702,8 @@ involve a priority argument was provided by Ku\v{c}era in 1986~\cite{Kucera:1986
     of each degree is exactly $\aleph_0$. Suppose, for the sake of contradiction,
     that a Turing degree contained only a finite number of decision
     problems. Then, the degree would be decidable, since every finite set is
-    decidable. But the only decidable degree is $0$, and in the previous section we
+    decidable. But we know that the only decidable degree is $0$, since all
+    decidable problems are mutually reducibile, and in the previous section we
     showed that the cardinality of $0$ is $\aleph_0$, so it follows that every
     degree has cardinality $\aleph_0$.
   \end{proof}
